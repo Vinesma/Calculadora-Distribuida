@@ -1,0 +1,33 @@
+import java.io.InputStream;
+import java.io.OutputStream;
+import java.net.ServerSocket;
+import java.net.Socket;
+
+public class SimpleJavaMidServer {
+
+    public static void main(String[] args) 	{
+        try {
+            ServerSocket s = new ServerSocket(6666);
+            String str;
+            while (true) {
+                Socket c = s.accept();
+                InputStream i = c.getInputStream();
+                OutputStream o = c.getOutputStream();
+                
+                Socket server = new Socket("127.0.0.1", 9999);
+                OutputStream o2 = server.getOutputStream();
+                do {
+                    byte[] line = new byte[100];
+                    i.read(line);
+                    str = new String(line);
+                    o2.write(line);
+                    str = new String(line);
+                } while ( !str.trim().equals("bye") );
+                c.close();
+            }
+        }
+        catch (Exception err){
+            System.err.println(err);
+        }
+    }
+}
