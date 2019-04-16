@@ -7,23 +7,27 @@ public class SimpleJavaMidServer {
 
     public static void main(String[] args) 	{
         try {
-            ServerSocket s = new ServerSocket(6666);
+            ServerSocket midserver = new ServerSocket(6666);
             String str;
             while (true) {
-                Socket c = s.accept();
-                InputStream i = c.getInputStream();
-                OutputStream o = c.getOutputStream();
+                Socket cliente = midserver.accept();
+                InputStream iCliente = cliente.getInputStream();
+                OutputStream oCliente = cliente.getOutputStream();
                 
                 Socket server = new Socket("127.0.0.1", 9999);
-                OutputStream o2 = server.getOutputStream();
+                InputStream iServer = server.getInputStream();
+                OutputStream oServer = server.getOutputStream();
+                
                 do {
                     byte[] line = new byte[100];
-                    i.read(line);
-                    str = new String(line);
-                    o2.write(line);
+                    iCliente.read(line);
+                    oServer.write(line);
+                    iServer.read(line);
+                    oCliente.write(line);
                     str = new String(line);
                 } while ( !str.trim().equals("bye") );
-                c.close();
+                cliente.close();
+                server.close();
             }
         }
         catch (Exception err){

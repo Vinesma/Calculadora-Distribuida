@@ -7,15 +7,15 @@ public class SimpleJavaServer {
 
     public static void main(String[] args) 	{
         try {
-            ServerSocket s = new ServerSocket(9999);
+            ServerSocket server = new ServerSocket(9999);
             String str;
             while (true) {
-                Socket c = s.accept();
-                InputStream i = c.getInputStream();
-                OutputStream o = c.getOutputStream();
+                Socket midserver = server.accept();
+                InputStream iMidServer = midserver.getInputStream();
+                OutputStream oMidServer = midserver.getOutputStream();
                 do {
                     byte[] line = new byte[100];
-                    i.read(line);
+                    iMidServer.read(line);
                     str = new String(line);
                     
                     String[] mensagem = new String[100];
@@ -40,10 +40,10 @@ public class SimpleJavaServer {
                     if (mensagem == null) 
                         throw new IllegalArgumentException("Falta do operador");
                                   
-                    o.write(resultado.toString().getBytes());
+                    oMidServer.write(resultado.toString().getBytes());
                     str = new String(line);
                 } while ( !str.trim().equals("bye") );
-                c.close();
+                midserver.close();
             }
         }
         catch (Exception err){
