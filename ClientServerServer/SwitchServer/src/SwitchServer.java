@@ -16,6 +16,8 @@ public class SwitchServer {
                 OutputStream oCliente = cliente.getOutputStream();
                 
                 do {
+                    System.out.println("Cliente: " + cliente.getInetAddress() + " conectou no servidor.");
+                    
                     byte[] line = new byte[100];
                     iCliente.read(line);
                     str = new String(line);
@@ -27,9 +29,12 @@ public class SwitchServer {
                         InputStream iServerAdd = serveradd.getInputStream();
                         OutputStream oServerAdd = serveradd.getOutputStream();
                         
-                        oServerAdd.write(line);
-                        iServerAdd.read(line);
-                        oCliente.write(line.toString().getBytes());
+                        oServerAdd.write(mensagem[0].getBytes());
+                        oServerAdd.write("+".getBytes());
+                        oServerAdd.write(mensagem[1].getBytes());
+                        System.out.println("Mensagem enviada ao servidor:" + serveradd.getInetAddress());
+                        iServerAdd.read(line);                        
+                        oCliente.write(line);
                         serveradd.close();                        
                     }
                     
@@ -39,9 +44,12 @@ public class SwitchServer {
                         InputStream iServerSub = serversub.getInputStream();
                         OutputStream oServerSub = serversub.getOutputStream();
                         
-                        oServerSub.write(line);
+                        oServerSub.write(mensagem[0].getBytes());
+                        oServerSub.write("-".getBytes());
+                        oServerSub.write(mensagem[1].getBytes());
+                        System.out.println("Mensagem enviada ao servidor:" + serversub.getInetAddress());
                         iServerSub.read(line);
-                        oCliente.write(line.toString().getBytes());
+                        oCliente.write(line);
                         serversub.close();
                     }
                     
@@ -51,9 +59,12 @@ public class SwitchServer {
                         InputStream iServerMult = servermult.getInputStream();
                         OutputStream oServerMult = servermult.getOutputStream();
                         
-                        oServerMult.write(line);
+                        oServerMult.write(mensagem[0].getBytes());
+                        oServerMult.write("*".getBytes());
+                        oServerMult.write(mensagem[1].getBytes());
+                        System.out.println("Mensagem enviada ao servidor:" + servermult.getInetAddress());
                         iServerMult.read(line);
-                        oCliente.write(line.toString().getBytes());
+                        oCliente.write(line);
                         servermult.close();
                     }
                     
@@ -63,9 +74,12 @@ public class SwitchServer {
                         InputStream iServerDiv = serverdiv.getInputStream();
                         OutputStream oServerDiv = serverdiv.getOutputStream();
                         
-                        oServerDiv.write(line);
+                        oServerDiv.write(mensagem[0].getBytes());
+                        oServerDiv.write("/".getBytes());
+                        oServerDiv.write(mensagem[1].getBytes());
+                        System.out.println("Mensagem enviada ao servidor:" + serverdiv.getInetAddress());
                         iServerDiv.read(line);
-                        oCliente.write(line.toString().getBytes());
+                        oCliente.write(line);
                         serverdiv.close();
                     }
                     

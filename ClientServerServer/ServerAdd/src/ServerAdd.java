@@ -13,20 +13,20 @@ public class ServerAdd {
                 Socket switchserver = server.accept();
                 InputStream iSwitchServer = switchserver.getInputStream();
                 OutputStream oSwitchServer = switchserver.getOutputStream();
-                do {
-                    byte[] line = new byte[100];
-                    iSwitchServer.read(line);
-                    str = new String(line);
                     
-                    String[] mensagem = new String[100];
-                    Double resultado = 0.0;
+                System.out.println(switchserver.getInetAddress() + " conectou no servidor.");
+                byte[] line = new byte[100];
+                String[] mensagem = new String[100];
+                iSwitchServer.read(line);
+                str = new String(line);
                     
-                    mensagem = str.split("\\+");
-                    resultado = somar(mensagem[0], mensagem[1]);
-                                  
-                    oSwitchServer.write(resultado.toString().getBytes());
-                    str = new String(line);
-                } while ( !str.trim().equals("bye") );
+                mensagem = str.split("\\+");
+                Double resultado = 0.0;
+
+                resultado = somar(mensagem[0], mensagem[1]);
+                    
+                oSwitchServer.write(resultado.toString().getBytes());
+                    
                 switchserver.close();
             }
         }
