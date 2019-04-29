@@ -126,7 +126,7 @@ public class SwitchServer {
                         OutputStream oServerRq = serverrq.getOutputStream();
                         
                         oServerRq.write(mensagem[0].getBytes());
-                        oServerRq.write("^".getBytes());
+                        oServerRq.write("#".getBytes());
                         oServerRq.write(mensagem[1].getBytes());
                         System.out.println("Mensagem enviada ao servidor:" + serverrq.getInetAddress());
                         iServerRq.read(line);
@@ -134,8 +134,6 @@ public class SwitchServer {
                         oCliente.write(line);
                         serverrq.close();
                     }
-                    
-                    serverConnect();
                     
                     if (mensagem == null){
                         throw new IllegalArgumentException("Falta do operador");
@@ -148,10 +146,5 @@ public class SwitchServer {
         catch (Exception err){
             System.err.println(err);
         }
-    }
-
-    private static void serverConnect() {
-        throw new UnsupportedOperationException("Not supported yet.");
-
     }
 }
