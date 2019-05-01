@@ -1,4 +1,5 @@
 # Sist-Distribuidos
-Material da disciplina de SI
+
+Pequeno sistema distribuído de servidores utilizando sockets.
 
 ![](diagrama.png "diagrama do projeto")
