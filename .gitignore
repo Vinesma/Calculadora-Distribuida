@@ -1,1 +1,9 @@
 /ClientServerServer/SimpleJavaClient/dist/
+/ClientServerServer/ServerMult/dist/
+/ClientServerServer/ServerSub/dist/
+/ClientServerServer/ServerAdd/dist/
+/ClientServerServer/ServerDiv/dist/
+/ClientServerServer/SwitchServer/dist/
+/MultithreadsJava/
+/SocketsJava/
+/ChatSocketMultithread/

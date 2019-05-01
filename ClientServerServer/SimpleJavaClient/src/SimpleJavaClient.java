@@ -29,7 +29,8 @@ public class SimpleJavaClient implements Runnable{
             String str;
             do {
                 byte[] line = new byte[100];
-                System.in.read(line);
+                System.out.println("Pronto para ler msg:");
+                System.in.read(line);              
                 oSwitchServer.write(line);
                 iSwitchServer.read(line);
                 str = new String(line);

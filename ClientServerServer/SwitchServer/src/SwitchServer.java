@@ -17,12 +17,12 @@ public class SwitchServer implements Runnable{
         try {
             ServerSocket switchserver = new ServerSocket(6666);
             System.out.println("Aguardando conexao do cliente...");
-                     
+            
             while (true) {
-            Socket cliente = switchserver.accept();            
-            SwitchServer tratamento = new SwitchServer(cliente);
-            Thread t = new Thread(tratamento);            
-            t.start();
+                Socket cliente = switchserver.accept();
+                SwitchServer tratamento = new SwitchServer(cliente);
+                Thread t = new Thread(tratamento);
+                t.start();
             }
         }
         catch (Exception err){
@@ -35,10 +35,9 @@ public class SwitchServer implements Runnable{
         try {
             InputStream iCliente = this.cliente.getInputStream();
             OutputStream oCliente = this.cliente.getOutputStream();
-                    
+            System.out.println("Cliente: " + cliente.getInetAddress() + " conectou no servidor.");
+            
             do {
-                System.out.println("Cliente: " + cliente.getInetAddress() + " conectou no servidor.");
-
                 byte[] line = new byte[100];
                 iCliente.read(line);
                 str = new String(line);
@@ -124,7 +123,7 @@ public class SwitchServer implements Runnable{
                     serverpot.close();
                 }
 
-                mensagem = str.split("\\%"); //porcentagem
+                mensagem = str.split("\\%"); //porcentagem?
                 if (mensagem.length == 2) {
                     Socket serverpor = new Socket(IP, 1239);
                     InputStream iServerPor = serverpor.getInputStream();
@@ -140,7 +139,7 @@ public class SwitchServer implements Runnable{
                     serverpor.close();
                 }
 
-                mensagem = str.split("\\#"); //raiz quadrada
+                mensagem = str.split("\\#"); //raiz quadrada?
                 if (mensagem.length == 2) {
                     Socket serverrq = new Socket(IP, 1239);
                     InputStream iServerRq = serverrq.getInputStream();
@@ -160,9 +159,8 @@ public class SwitchServer implements Runnable{
                     throw new IllegalArgumentException("Falta do operador");
                 }
                 str = new String(line);
-            } while ( !str.trim().equals("bye") );
-            
-            this.cliente.close(); 
+            } while ( !str.trim().equals("bye") );           
+            this.cliente.close();
         } catch (IOException e) {
             e.printStackTrace();
         }
