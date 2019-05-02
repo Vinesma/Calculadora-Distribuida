@@ -3,12 +3,12 @@
 Pequeno sistema distribuído de servidores utilizando sockets.
 
 ## Diagrama
-![](diagrama.png "diagrama do projeto")
+![](diagrama.png "Diagrama do projeto")
 
 ## Decisões de projeto
 Utilizou-se Sockets para conexão e Threads para comportar vários clientes no mesmo servidor.
 
-Dependendo da mensagem o servidor (SwitchServer) encaminha o pedido ao servidor escravo neccessário por meio do uso da função split() nas strings do Java.
+Dependendo da mensagem o servidor (SwitchServer) encaminha o pedido ao servidor escravo neccessário por meio do uso da função split() nas strings do Java. Exceto no caso de raiz quadrada, em que o símbolo '#' deve vir após o número, nesse caso usa-se a função contains(), também das strings Java.
 
 As portas foram escolhidas com enfase na memorização, com cuidado para evitar portas <= 1024. Os escravos receberam portas sequenciais.
 
