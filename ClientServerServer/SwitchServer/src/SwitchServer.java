@@ -163,7 +163,7 @@ public class SwitchServer implements Runnable{
             } while ( !str.trim().equals("bye") );           
             this.cliente.close();
         } catch (IOException e) {
-            System.err.println("Cliente desconectado.");
+            System.err.println("Cliente desconectado. Mensagem: " + e);
         }
     }
 }
