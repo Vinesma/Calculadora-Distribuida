@@ -139,16 +139,13 @@ public class SwitchServer implements Runnable{
                     oCliente.write(line);
                     serverpor.close();
                 }
-
-                mensagem = str.split("\\#"); //raiz quadrada?
-                if (mensagem.length == 2) {
+                
+                if (str.contains("#")) { //raiz quadrada
                     Socket serverrq = new Socket(IP, 1240);
                     InputStream iServerRq = serverrq.getInputStream();
                     OutputStream oServerRq = serverrq.getOutputStream();
 
-                    oServerRq.write(mensagem[0].getBytes());
-                    oServerRq.write("#".getBytes());
-                    oServerRq.write(mensagem[1].getBytes());
+                    oServerRq.write(str.getBytes());
                     System.out.println("Mensagem enviada ao servidor:" + serverrq.getInetAddress());
                     iServerRq.read(line);
                     System.out.println("Mensagem retornada pelo servidor:" + serverrq.getInetAddress());

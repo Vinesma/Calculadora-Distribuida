@@ -19,14 +19,16 @@ public class ServerSqr {
                 String[] mensagem = new String[100];
                 iSwitchServer.read(line);
                 str = new String(line);
-                    
-                mensagem = str.split("\\#");
                 Double resultado = 0.0;
-
-                resultado = raizq(mensagem[0], mensagem[1]);
-                    
-                oSwitchServer.write(resultado.toString().getBytes());
-                    
+                
+                mensagem = str.split("\\#");
+                
+                try {
+                    resultado = raizq(mensagem[0]);                    
+                    oSwitchServer.write(resultado.toString().getBytes());
+                } catch (NumberFormatException e) {
+                    oSwitchServer.write("Esperado uma operacao numerica!".getBytes());
+                }                                                                       
                 switchserver.close();
             }
         }
@@ -35,12 +37,10 @@ public class ServerSqr {
         }
     }
 
-    private static Double raizq(String string, String string0) {
-        Double op1;
-        Double op2;
+    private static Double raizq(String string) {
+        Double op1;        
         
-        op1 = Double.parseDouble(string);
-        op2 = Double.parseDouble(string0);
+        op1 = Double.parseDouble(string);        
         
         return Math.sqrt(op1);
     }

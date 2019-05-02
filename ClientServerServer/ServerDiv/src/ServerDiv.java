@@ -1,3 +1,4 @@
+import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.ServerSocket;
@@ -23,9 +24,12 @@ public class ServerDiv {
                 mensagem = str.split("\\/");
                 Double resultado = 0.0;
 
-                resultado = dividir(mensagem[0], mensagem[1]);
-                    
-                oSwitchServer.write(resultado.toString().getBytes());
+                try {
+                    resultado = dividir(mensagem[0], mensagem[1]);                    
+                    oSwitchServer.write(resultado.toString().getBytes());
+                } catch (NumberFormatException e) {
+                    oSwitchServer.write("Esperado uma operacao numerica!".getBytes());
+                }
                     
                 switchserver.close();
             }
