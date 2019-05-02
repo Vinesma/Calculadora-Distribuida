@@ -3,6 +3,7 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.net.SocketException;
 
 public class SwitchServer implements Runnable{
     public static final String IP = "127.0.0.1";
@@ -13,7 +14,7 @@ public class SwitchServer implements Runnable{
         this.cliente = cliente;
     }
 
-    public static void main(String[] args) throws IOException{       
+    public static void main(String[] args) throws IOException, SocketException{       
         try {
             ServerSocket switchserver = new ServerSocket(6666);
             System.out.println("Aguardando conexao do cliente...");
@@ -123,14 +124,14 @@ public class SwitchServer implements Runnable{
                     serverpot.close();
                 }
 
-                mensagem = str.split("\\%"); //porcentagem?
+                mensagem = str.split("\\%"); //porcentagem
                 if (mensagem.length == 2) {
                     Socket serverpor = new Socket(IP, 1239);
                     InputStream iServerPor = serverpor.getInputStream();
                     OutputStream oServerPor = serverpor.getOutputStream();
 
                     oServerPor.write(mensagem[0].getBytes());
-                    oServerPor.write("^".getBytes());
+                    oServerPor.write("%".getBytes());
                     oServerPor.write(mensagem[1].getBytes());
                     System.out.println("Mensagem enviada ao servidor:" + serverpor.getInetAddress());
                     iServerPor.read(line);
@@ -141,7 +142,7 @@ public class SwitchServer implements Runnable{
 
                 mensagem = str.split("\\#"); //raiz quadrada?
                 if (mensagem.length == 2) {
-                    Socket serverrq = new Socket(IP, 1239);
+                    Socket serverrq = new Socket(IP, 1240);
                     InputStream iServerRq = serverrq.getInputStream();
                     OutputStream oServerRq = serverrq.getOutputStream();
 
@@ -162,7 +163,7 @@ public class SwitchServer implements Runnable{
             } while ( !str.trim().equals("bye") );           
             this.cliente.close();
         } catch (IOException e) {
-            e.printStackTrace();
+            System.err.println("Cliente desconectado.");
         }
     }
 }
