@@ -4,19 +4,19 @@ import java.io.OutputStream;
 import java.net.UnknownHostException;
 import java.net.Socket;
 
-public class SimpleJavaClient implements Runnable{       
+public class JavaClient implements Runnable{       
     public static final String IP = "127.0.0.1";
     
     private Socket cliente;
     
-    public SimpleJavaClient(Socket cliente){
+    public JavaClient(Socket cliente){
         this.cliente = cliente;
     }
     
     public static void main(String[] args) throws UnknownHostException, IOException {       
         Socket socket = new Socket(IP, 6666);
 
-        SimpleJavaClient c = new SimpleJavaClient(socket);
+        JavaClient c = new JavaClient(socket);
         Thread t = new Thread(c);
         t.start();        
     }

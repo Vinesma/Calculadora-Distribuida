@@ -3,12 +3,21 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.ServerSocket;
 import java.net.Socket;
+import javax.swing.JOptionPane;
 
 public class ServerOpspec {
 
-    public static void main(String[] args) 	{        
+    public static void main(String[] args) 	{
+        int port = 6999;
+        
         try {
-            ServerSocket server = new ServerSocket(1235);
+            port = Integer.parseInt(JOptionPane.showInputDialog("Informe a porta que deseja usar (Padrão <= 6999)"));
+        } catch (NumberFormatException e) {
+            JOptionPane.showMessageDialog(null, "Porta inválida, Porta 6999 escolhida.");
+        }
+        
+        try {
+            ServerSocket server = new ServerSocket(6999);
             String str;
             while (true) {
                 Socket switchserver = server.accept();
