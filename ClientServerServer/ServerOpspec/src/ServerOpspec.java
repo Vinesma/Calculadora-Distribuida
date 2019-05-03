@@ -4,11 +4,11 @@ import java.io.OutputStream;
 import java.net.ServerSocket;
 import java.net.Socket;
 
-public class ServerPot {
+public class ServerOpspec {
 
     public static void main(String[] args) 	{        
         try {
-            ServerSocket server = new ServerSocket(1238);
+            ServerSocket server = new ServerSocket(1235);
             String str;
             while (true) {
                 Socket switchserver = server.accept();
@@ -47,5 +47,23 @@ public class ServerPot {
         op2 = Double.parseDouble(string0);
         
         return Math.pow(op1,op2);
+    }
+    
+    private static Double porcentagem(String string, String string0) {
+        Double op1;
+        Double op2;
+        
+        op1 = Double.parseDouble(string);
+        op2 = Double.parseDouble(string0);
+        
+        return (op1 * op2) / 100;
+    }
+    
+    private static Double raizq(String string) {
+        Double op1;        
+        
+        op1 = Double.parseDouble(string);        
+        
+        return Math.sqrt(op1);
     }
 }

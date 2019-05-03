@@ -18,10 +18,10 @@ public class ServerSqr {
                 byte[] line = new byte[100];
                 String[] mensagem = new String[100];
                 iSwitchServer.read(line);
-                str = new String(line);
-                Double resultado = 0.0;
+                str = new String(line);                
                 
                 mensagem = str.split("\\#");
+                Double resultado = 0.0;
                 
                 try {
                     resultado = raizq(mensagem[0]);                    

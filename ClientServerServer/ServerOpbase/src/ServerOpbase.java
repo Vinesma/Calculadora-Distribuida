@@ -4,7 +4,7 @@ import java.io.OutputStream;
 import java.net.ServerSocket;
 import java.net.Socket;
 
-public class ServerAdd {
+public class ServerOpbase {
 
     public static void main(String[] args) 	{        
         try {
@@ -47,5 +47,35 @@ public class ServerAdd {
         op2 = Double.parseDouble(string0);
         
         return op1 + op2;
+    }
+    
+    private static Double subtrair(String string, String string0) {
+        Double op1;
+        Double op2;
+        
+        op1 = Double.parseDouble(string);
+        op2 = Double.parseDouble(string0);
+        
+        return op1 - op2;
+    }
+    
+    private static Double multiplicar(String string, String string0) {
+        Double op1;
+        Double op2;
+        
+        op1 = Double.parseDouble(string);
+        op2 = Double.parseDouble(string0);
+        
+        return op1 * op2;
+    }
+    
+    private static Double dividir(String string, String string0) {
+        Double op1;
+        Double op2;
+        
+        op1 = Double.parseDouble(string);
+        op2 = Double.parseDouble(string0);
+        
+        return op1 / op2;
     }
 }

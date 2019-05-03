@@ -4,9 +4,14 @@ import java.io.OutputStream;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.net.SocketException;
+import java.util.List;
+import java.util.ArrayList;
 
 public class SwitchServer implements Runnable{
     public static final String IP = "127.0.0.1";
+    
+    private static List<Socket> SocketListOpbase = new ArrayList<Socket>();
+    private static List<Socket> SocketListOpspec = new ArrayList<Socket>();
     
     public Socket cliente;
 
@@ -32,83 +37,50 @@ public class SwitchServer implements Runnable{
     }
 
     public void run() {
-        String str;
+        String str;        
         try {
             InputStream iCliente = this.cliente.getInputStream();
             OutputStream oCliente = this.cliente.getOutputStream();
             System.out.println("Cliente: " + cliente.getInetAddress() + " conectou no servidor.");
             
+            Socket serveropbase = new Socket(IP, 1234);
+            SocketListOpbase.add(serveropbase);
+            
+            Socket serveropspec = new Socket(IP, 1235);
+            SocketListOpspec.add(serveropspec);
+//            InputStream iServerOpbase = serveropbase.getInputStream();
+//            OutputStream oServerOpbase = serveropbase.getOutputStream();
+
             do {
                 byte[] line = new byte[100];
                 iCliente.read(line);
                 str = new String(line);
-                String[] mensagem = new String[100];
-
+                String[] mensagem = new String[100];                
+                
+                                
                 mensagem = str.split("\\+"); //soma
-                if (mensagem.length == 2){
-                    Socket serveradd = new Socket(IP, 1234);
-                    InputStream iServerAdd = serveradd.getInputStream();
-                    OutputStream oServerAdd = serveradd.getOutputStream();
-
-                    oServerAdd.write(mensagem[0].getBytes());
-                    oServerAdd.write("+".getBytes());
-                    oServerAdd.write(mensagem[1].getBytes());
-                    System.out.println("Mensagem enviada ao servidor:" + serveradd.getInetAddress());
-                    iServerAdd.read(line);
-                    System.out.println("Mensagem retornada pelo servidor:" + serveradd.getInetAddress());
-                    oCliente.write(line);
-                    serveradd.close();                        
+                if (mensagem.length == 2) {
+                    
                 }
-
                 mensagem = str.split("\\-"); //subtracao
-                if (mensagem.length == 2){
-                    Socket serversub = new Socket(IP, 1235);
-                    InputStream iServerSub = serversub.getInputStream();
-                    OutputStream oServerSub = serversub.getOutputStream();
-
-                    oServerSub.write(mensagem[0].getBytes());
-                    oServerSub.write("-".getBytes());
-                    oServerSub.write(mensagem[1].getBytes());
-                    System.out.println("Mensagem enviada ao servidor:" + serversub.getInetAddress());
-                    iServerSub.read(line);
-                    System.out.println("Mensagem retornada pelo servidor:" + serversub.getInetAddress());
-                    oCliente.write(line);
-                    serversub.close();
-                }
-
                 mensagem = str.split("\\*"); //multiplicacao
-                if (mensagem.length == 2){
-                    Socket servermult = new Socket(IP, 1236);
-                    InputStream iServerMult = servermult.getInputStream();
-                    OutputStream oServerMult = servermult.getOutputStream();
-
-                    oServerMult.write(mensagem[0].getBytes());
-                    oServerMult.write("*".getBytes());
-                    oServerMult.write(mensagem[1].getBytes());
-                    System.out.println("Mensagem enviada ao servidor:" + servermult.getInetAddress());
-                    iServerMult.read(line);
-                    System.out.println("Mensagem retornada pelo servidor:" + servermult.getInetAddress());
-                    oCliente.write(line);
-                    servermult.close();
-                }
-
                 mensagem = str.split("\\/"); //divisao
-                if (mensagem.length == 2){
-                    Socket serverdiv = new Socket(IP, 1237);
-                    InputStream iServerDiv = serverdiv.getInputStream();
-                    OutputStream oServerDiv = serverdiv.getOutputStream();
+                if (mensagem.length == 2){                    
+                    InputStream iServerOpbase = serveropbase.getInputStream();
+                    OutputStream oServerOpbase = serveropbase.getOutputStream();
 
-                    oServerDiv.write(mensagem[0].getBytes());
-                    oServerDiv.write("/".getBytes());
-                    oServerDiv.write(mensagem[1].getBytes());
-                    System.out.println("Mensagem enviada ao servidor:" + serverdiv.getInetAddress());
-                    iServerDiv.read(line);
-                    System.out.println("Mensagem retornada pelo servidor:" + serverdiv.getInetAddress());
+                    oServerOpbase.write(mensagem[0].getBytes());
+                    oServerOpbase.write("+".getBytes());
+                    oServerOpbase.write(mensagem[1].getBytes());
+                    System.out.println("Mensagem enviada ao servidor:" + serveropbase.getInetAddress());
+                    iServerOpbase.read(line);
+                    System.out.println("Mensagem retornada pelo servidor:" + serveropbase.getInetAddress());
                     oCliente.write(line);
-                    serverdiv.close();
-                }
+                    serveropbase.close();                        
+                }              
 
                 mensagem = str.split("\\^"); //potenciacao
+                mensagem = str.split("\\%"); //porcentagem
                 if (mensagem.length == 2) {
                     Socket serverpot = new Socket(IP, 1238);
                     InputStream iServerPot = serverpot.getInputStream();
@@ -122,22 +94,6 @@ public class SwitchServer implements Runnable{
                     System.out.println("Mensagem retornada pelo servidor:" + serverpot.getInetAddress());
                     oCliente.write(line);
                     serverpot.close();
-                }
-
-                mensagem = str.split("\\%"); //porcentagem
-                if (mensagem.length == 2) {
-                    Socket serverpor = new Socket(IP, 1239);
-                    InputStream iServerPor = serverpor.getInputStream();
-                    OutputStream oServerPor = serverpor.getOutputStream();
-
-                    oServerPor.write(mensagem[0].getBytes());
-                    oServerPor.write("%".getBytes());
-                    oServerPor.write(mensagem[1].getBytes());
-                    System.out.println("Mensagem enviada ao servidor:" + serverpor.getInetAddress());
-                    iServerPor.read(line);
-                    System.out.println("Mensagem retornada pelo servidor:" + serverpor.getInetAddress());
-                    oCliente.write(line);
-                    serverpor.close();
                 }
                 
                 if (str.contains("#")) { //raiz quadrada
