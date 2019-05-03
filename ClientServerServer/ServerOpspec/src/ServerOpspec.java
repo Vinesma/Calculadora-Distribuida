@@ -17,31 +17,44 @@ public class ServerOpspec {
         }
         
         try {
-            ServerSocket server = new ServerSocket(6999);
+            ServerSocket server = new ServerSocket(port);
             String str;
-            while (true) {
-                Socket switchserver = server.accept();
-                InputStream iSwitchServer = switchserver.getInputStream();
-                OutputStream oSwitchServer = switchserver.getOutputStream();
-                    
-                System.out.println(switchserver.getInetAddress() + " conectou no servidor.");
+            
+            Socket switchserver = server.accept();
+            InputStream iSwitchServer = switchserver.getInputStream();
+            OutputStream oSwitchServer = switchserver.getOutputStream();
+            System.out.println(switchserver.getInetAddress() + " conectou no servidor.");
+            
+            while (true) {                
                 byte[] line = new byte[100];
                 String[] mensagem = new String[100];
                 iSwitchServer.read(line);
                 str = new String(line);
-                    
-                mensagem = str.split("\\^");
                 Double resultado = 0.0;
-
+                    
                 try {
-                    resultado = potencia(mensagem[0], mensagem[1]);                    
-                    oSwitchServer.write(resultado.toString().getBytes());
+                    mensagem = str.split("\\^");
+                    if (mensagem.length == 2) {
+                        resultado = potencia(mensagem[0], mensagem[1]);
+                        oSwitchServer.write(resultado.toString().getBytes());
+                    }
+                    mensagem = str.split("\\%");
+                    if (mensagem.length == 2) {
+                        resultado = porcentagem(mensagem[0], mensagem[1]);
+                        oSwitchServer.write(resultado.toString().getBytes());
+                    }
+                    mensagem = str.split("\\#");
+                    if (mensagem.length == 2) {
+                        resultado = raizq(mensagem[0]);
+                        oSwitchServer.write(resultado.toString().getBytes());
+                    }                    
+                    if (mensagem == null){
+                        oSwitchServer.write("Esperado uma operacao numerica!".getBytes());
+                    }
                 } catch (NumberFormatException e) {
                     oSwitchServer.write("Esperado uma operacao numerica!".getBytes());
                 }
-                    
-                switchserver.close();
-            }
+            }                                                              
         }
         catch (Exception err){
             System.err.println(err);

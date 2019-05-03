@@ -168,9 +168,15 @@ public class SwitchServer implements Runnable{
                     throw new IllegalArgumentException("Falta do operador");
                 }
                 str = new String(line);
-            } while ( !str.trim().equals("bye") );           
+            } while (!str.trim().equals("bye"));           
             this.cliente.close();
-//            SocketList.forEach(SocketList.get(0).close());
+            SocketList.forEach(e -> {
+                try {
+                    e.close();
+                } catch (IOException ex) {
+                    System.err.println(ex);
+                }
+                });
         } catch (IOException e) {
             System.err.println("Cliente desconectado. Mensagem: " + e);
         }
@@ -183,12 +189,15 @@ public class SwitchServer implements Runnable{
     private byte[] SendToServer(String[] mensagem, byte[] line, String op) throws IOException {
         InputStream iServerOpbase = SocketList.get(0).getInputStream();
         OutputStream oServerOpbase = SocketList.get(0).getOutputStream();
+        String toServer;
         
-        oServerOpbase.write(mensagem[0].getBytes());
-        oServerOpbase.write(op.getBytes());
-        if (!op.equals("#")) {
-            oServerOpbase.write(mensagem[1].getBytes());
+        if (!op.equals("#")) {            
+            toServer = mensagem[0].trim() + op + mensagem[1].trim();
+        }else{
+            toServer = mensagem[0].trim() + op;
         }
+        
+        oServerOpbase.write(toServer.getBytes());        
         System.out.println("Mensagem enviada ao servidor:" + SocketList.get(0).getInetAddress());
         iServerOpbase.read(line);
         System.out.println("Mensagem retornada pelo servidor:" + SocketList.get(0).getInetAddress());

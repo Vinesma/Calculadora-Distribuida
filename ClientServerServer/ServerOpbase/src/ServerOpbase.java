@@ -18,7 +18,7 @@ public class ServerOpbase {
         }
         
         try {
-            ServerSocket server = new ServerSocket(7000);
+            ServerSocket server = new ServerSocket(port);
             String str;
             
             Socket switchserver = server.accept();
@@ -31,19 +31,37 @@ public class ServerOpbase {
                 String[] mensagem = new String[100];
                 iSwitchServer.read(line);
                 str = new String(line);
-
-                mensagem = str.split("\\+");
                 Double resultado = 0.0;
-
+                
                 try {
-                    resultado = somar(mensagem[0], mensagem[1]);
-                    oSwitchServer.write(resultado.toString().getBytes());
+                    mensagem = str.split("\\+");
+                    if (mensagem.length == 2) {
+                        resultado = somar(mensagem[0], mensagem[1]);
+                        oSwitchServer.write(resultado.toString().getBytes());
+                    }
+                    mensagem = str.split("\\-");
+                    if (mensagem.length == 2) {
+                        resultado = subtrair(mensagem[0], mensagem[1]);
+                        oSwitchServer.write(resultado.toString().getBytes());
+                    }
+                    mensagem = str.split("\\*");
+                    if (mensagem.length == 2) {
+                        resultado = multiplicar(mensagem[0], mensagem[1]);
+                        oSwitchServer.write(resultado.toString().getBytes());
+                    }
+                    mensagem = str.split("\\/");
+                    if (mensagem.length == 2) {
+                        resultado = dividir(mensagem[0], mensagem[1]);
+                        oSwitchServer.write(resultado.toString().getBytes());
+                    }
+                    if (mensagem == null){
+                        oSwitchServer.write("Esperado uma operacao numerica!".getBytes());
+                    }
                 } catch (NumberFormatException e) {
                     oSwitchServer.write("Esperado uma operacao numerica!".getBytes());
                 }
             }
-        }
-        catch (Exception err){
+        } catch (Exception err){
             System.err.println(err);
         }
     }
