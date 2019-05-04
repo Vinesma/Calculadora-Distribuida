@@ -1,6 +1,7 @@
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.net.InetAddress;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.net.SocketException;
@@ -9,6 +10,7 @@ import java.util.ArrayList;
 
 public class SwitchServer implements Runnable{
     public static final String IP = "127.0.0.1";
+    public static final String IP2 = "127.0.0.1";
     
     private static List<Socket> SocketList = new ArrayList<Socket>();    
     
@@ -34,7 +36,7 @@ public class SwitchServer implements Runnable{
             n = 6999;
             try {
                 while (true) {                    
-                    Socket serveropspec = new Socket(IP, n);
+                    Socket serveropspec = new Socket(IP2, n);
                     SocketList.add(serveropspec);
                     n--;
                 }
@@ -75,8 +77,7 @@ public class SwitchServer implements Runnable{
                     boolean done = false;
                     while (!done) {
                         if (SocketList.get(0).getPort() >= 7000) {
-                            oCliente.write(SendToServer(mensagem, line, "+"));
-                            ShiftToLast();
+                            oCliente.write(SendToServer(mensagem, line, "+"));                            
                             done = true;
                         }else{
                             ShiftToLast();
@@ -88,8 +89,7 @@ public class SwitchServer implements Runnable{
                     boolean done = false;
                     while (!done) {
                         if (SocketList.get(0).getPort() >= 7000) {
-                            oCliente.write(SendToServer(mensagem, line, "-"));
-                            ShiftToLast();
+                            oCliente.write(SendToServer(mensagem, line, "-"));                            
                             done = true;
                         }else{
                             ShiftToLast();
@@ -101,8 +101,7 @@ public class SwitchServer implements Runnable{
                     boolean done = false;
                     while (!done) {
                         if (SocketList.get(0).getPort() >= 7000) {
-                            oCliente.write(SendToServer(mensagem, line, "*"));
-                            ShiftToLast();
+                            oCliente.write(SendToServer(mensagem, line, "*"));                            
                             done = true;
                         }else{
                             ShiftToLast();
@@ -114,8 +113,7 @@ public class SwitchServer implements Runnable{
                     boolean done = false;
                     while (!done) {
                         if (SocketList.get(0).getPort() >= 7000) {
-                            oCliente.write(SendToServer(mensagem, line, "/"));
-                            ShiftToLast();
+                            oCliente.write(SendToServer(mensagem, line, "/"));                            
                             done = true;
                         }else{
                             ShiftToLast();
@@ -128,8 +126,7 @@ public class SwitchServer implements Runnable{
                     boolean done = false;
                     while (!done) {
                         if (SocketList.get(0).getPort() < 7000) {
-                            oCliente.write(SendToServer(mensagem, line, "^"));
-                            ShiftToLast();
+                            oCliente.write(SendToServer(mensagem, line, "^"));                            
                             done = true;
                         }else{
                             ShiftToLast();
@@ -141,8 +138,7 @@ public class SwitchServer implements Runnable{
                     boolean done = false;
                     while (!done) {
                         if (SocketList.get(0).getPort() < 7000) {
-                            oCliente.write(SendToServer(mensagem, line, "%"));
-                            ShiftToLast();
+                            oCliente.write(SendToServer(mensagem, line, "%"));                            
                             done = true;
                         }else{
                             ShiftToLast();
@@ -155,8 +151,7 @@ public class SwitchServer implements Runnable{
                     boolean done = false;
                     while (!done) {
                         if (SocketList.get(0).getPort() < 7000) {
-                            oCliente.write(SendToServer(mensagem, line, "#"));
-                            ShiftToLast();
+                            oCliente.write(SendToServer(mensagem, line, "#"));                            
                             done = true;
                         }else{
                             ShiftToLast();
@@ -189,8 +184,11 @@ public class SwitchServer implements Runnable{
     private byte[] SendToServer(String[] mensagem, byte[] line, String op) throws IOException {
         InputStream iServerOpbase = SocketList.get(0).getInputStream();
         OutputStream oServerOpbase = SocketList.get(0).getOutputStream();
-        String toServer;
+        InetAddress adress = SocketList.get(0).getInetAddress();
         
+        ShiftToLast();
+        
+        String toServer;        
         if (!op.equals("#")) {            
             toServer = mensagem[0].trim() + op + mensagem[1].trim();
         }else{
@@ -198,9 +196,9 @@ public class SwitchServer implements Runnable{
         }
         
         oServerOpbase.write(toServer.getBytes());        
-        System.out.println("Mensagem enviada ao servidor:" + SocketList.get(0).getInetAddress());
+        System.out.println("Mensagem enviada ao servidor:" + adress);
         iServerOpbase.read(line);
-        System.out.println("Mensagem retornada pelo servidor:" + SocketList.get(0).getInetAddress());
+        System.out.println("Mensagem retornada pelo servidor:" + adress);
         return line;
     }
 }
