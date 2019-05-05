@@ -12,7 +12,7 @@ public class SwitchServer implements Runnable{
     public static final String IP = "127.0.0.1";
     public static final String IP2 = "127.0.0.1";
     
-    private static List<Socket> SocketList = new ArrayList<Socket>();    
+    private static List<Socket> SocketList = new ArrayList<Socket>();        
     
     public Socket cliente;
 
@@ -50,7 +50,7 @@ public class SwitchServer implements Runnable{
                 Socket cliente = switchserver.accept();
                 SwitchServer tratamento = new SwitchServer(cliente);
                 Thread t = new Thread(tratamento);
-                t.start();
+                t.start();                                
             }
         }
         catch (Exception err){
@@ -164,14 +164,7 @@ public class SwitchServer implements Runnable{
                 }
                 str = new String(line);
             } while (!str.trim().equals("bye"));           
-            this.cliente.close();
-            SocketList.forEach(e -> {
-                try {
-                    e.close();
-                } catch (IOException ex) {
-                    System.err.println(ex);
-                }
-                });
+            this.cliente.close();            
         } catch (IOException e) {
             System.err.println("Cliente desconectado. Mensagem: " + e);
         }
